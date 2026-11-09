@@ -1,0 +1,40 @@
+# Python environments and generated caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv*
+
+# Editor settings and local-only legacy projects
+.claude-dev-helper/
+.vscode/
+*.iml
+.idea/
+.github/workflows/flutter-web.yml
+/DEPLOYMENT.md
+/app_praktikum_streamlit.py
+/detect_webcam.py
+/detect_webcam_praktikum.py
+/train.py
+mobile/
+
+# Secrets and local logs/databases
+.env
+.env.*
+!.env.example
+*.log
+*.sqlite3
+serviceAccountKey.json
+firebase-admin*.json
+*.pem
+
+# Datasets, model weights, and runtime output
+.DS_Store
+outputsApp/
+PlantVillage/
+*.pth
+*.h5
+/backend/numeric_ann_weights.metrics.json
+
+# Flutter build artifacts
+.dart_tool/
+build/
