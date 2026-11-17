@@ -662,8 +662,8 @@ def _analyze(
 
 
 @app.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+def health() -> dict[str, str | bool]:
+    return {"status": "ok", "model_loaded": _model_bundle is not None}
 
 
 @app.post("/api/v1/analyze-plant")

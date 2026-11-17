@@ -339,7 +339,9 @@ class _WeatherCarePanelState extends State<_WeatherCarePanel> {
   }
 
   void _refresh() {
-    setState(() => _weatherRequest = _service.fetchCurrent());
+    setState(() {
+      _weatherRequest = _service.fetchCurrent();
+    });
   }
 
   @override

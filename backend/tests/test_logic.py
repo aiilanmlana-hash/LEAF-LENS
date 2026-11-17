@@ -26,6 +26,7 @@ from backend.main import (
     UNSUPPORTED_PLANT_MESSAGE,
     app,
     fuzzy_health_score,
+    health,
     lifespan,
 )
 from backend.compact_context import build_compact_ai_context
@@ -45,6 +46,20 @@ from backend.train_plant_model import (
     _validation_duplicate_indexes,
 )
 from backend.weather import resolve_weather
+
+
+class HealthCheckTests(unittest.TestCase):
+    def test_health_reports_model_load_state(self):
+        with patch("backend.main._model_bundle", None):
+            self.assertEqual(
+                health(),
+                {"status": "ok", "model_loaded": False},
+            )
+        with patch("backend.main._model_bundle", object()):
+            self.assertEqual(
+                health(),
+                {"status": "ok", "model_loaded": True},
+            )
 
 
 class FuzzyHealthScoreTests(unittest.TestCase):

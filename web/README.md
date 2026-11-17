@@ -79,7 +79,8 @@ Biarkan proses ini berjalan. Buka <http://127.0.0.1:8000/docs> untuk memastikan
 halaman dokumentasi API muncul. `PLANT_REQUIRE_AUTH=false` hanya untuk demo
 lokal; jangan gunakan konfigurasi ini pada server publik.
 Health check dapat diverifikasi di <http://127.0.0.1:8000/health>; respons yang
-diharapkan adalah `{"status":"ok"}`.
+diharapkan adalah `{"status":"ok","model_loaded":true}` setelah checkpoint model
+berhasil dimuat. Nilai `model_loaded` akan `false` jika checkpoint tidak tersedia.
 
 ### 3. Jalankan frontend LEAF LENS (Terminal 2)
 

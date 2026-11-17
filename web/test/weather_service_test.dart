@@ -249,6 +249,53 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   }
+
+  testWidgets('refreshes dashboard weather without a setState error', (
+    tester,
+  ) async {
+    var requestCount = 0;
+    final service = WeatherService(
+      client: MockClient((_) async {
+        requestCount++;
+        return http.Response(
+          jsonEncode({
+            'current': {
+              'temperature_2m': 27,
+              'relative_humidity_2m': 65,
+              'precipitation': 0,
+              'rain': 0,
+            },
+          }),
+          200,
+        );
+      }),
+      locationResolver: () async =>
+          const WeatherCoordinates(latitude: -7.25, longitude: 112.75),
+    );
+    addTearDown(service.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: PlantTheme.light,
+        home: DashboardScreen(
+          repository: _EmptyDashboardRepository(),
+          onScan: () {},
+          weatherService: service,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byTooltip('Perbarui cuaca'),
+      250,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.byTooltip('Perbarui cuaca'));
+    await tester.pumpAndSettle();
+
+    expect(requestCount, 2);
+    expect(tester.takeException(), isNull);
+  });
 }
 
 class _EmptyDashboardRepository implements MonitoringRepository {
