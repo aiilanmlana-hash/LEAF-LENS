@@ -7,12 +7,13 @@ ini. Repository ini berisi API analisis gambar FastAPI (`backend/`), frontend
 Flutter Web (`web/`), workflow CI, dan dokumentasi resmi. Aplikasi Web memakai
 API untuk analisis; klasifikasi gambar dijalankan di backend.
 
-Dataset PlantVillage, checkpoint model (`*.pth`, `*.h5`), output runtime,
+Dataset PlantVillage, checkpoint tambahan (`*.pth`, `*.h5`), output runtime,
 aplikasi mobile terpisah, dan skrip eksperimen lama tidak dilacak di repository.
-Untuk menjalankan inferensi, sediakan checkpoint MobileNetV2 yang kompatibel
-secara terpisah; metadata nama kelas dibaca dari checkpoint sehingga dataset
-tidak diperlukan untuk inference. Dataset tetap diperlukan secara lokal untuk
-melatih atau mengevaluasi model.
+Checkpoint MobileNetV2 aktif di
+`backend/model_daun_plantvillage_full_train.pth` dilacak dan memuat 19 kelas,
+termasuk `Background_or_Invalid`. Untuk inference, metadata nama kelas dibaca
+dari checkpoint sehingga dataset tidak diperlukan; dataset tetap diperlukan
+secara lokal untuk melatih atau mengevaluasi model.
 
 Panduan menjalankan aplikasi Web secara lokal ada di
 [tutorial LEAF LENS](web/README.md#tutorial-menjalankan-web-secara-lokal).
@@ -123,14 +124,14 @@ Project_Klasifikasi_Daun/
 | Web history output | Firestore collection `monitoring_records`, field `user_id` | Web history is isolated to the signed-in user |
 | API history output | `outputsApp/monitoring_api.sqlite3` and `outputsApp/monitoring_api.csv` | Local backend history; also exposed through API history endpoints |
 | API segmentation output | `outputsApp/masks/` | PNG masks from successful backend analyses |
-| Model evaluation output | `outputsApp/*metrics.json` (when using `--report`) | Training/evaluation metrics, not individual web scans |
+| Model evaluation output | `outputsApp/pbl_plantvillage_metrics.json` | Tracked evaluation metrics for the active 19-class model; additional reports are local outputs |
 | Numeric ANN model output | `backend/numeric_ann_weights.json` by default | Loaded automatically if a trained checkpoint exists |
 | Historical weather input | `backend/climate_data_idn.csv/` | BMKG station records used when Open-Meteo is unavailable |
 
 The web result, including its care summary, is saved to Firestore by the Flutter app. Backend CSV/SQLite/mask
 files are on the machine running FastAPI and are separate from Firestore. The
-`outputsApp/` directory is retained as the common output root; generated files
-are grouped there by purpose without moving existing project data.
+`outputsApp/` directory is retained as the common output root; runtime files are
+ignored by Git. The active evaluation report above is a tracked exception.
 
 ## Backend
 
@@ -224,12 +225,11 @@ validation files that also occur in train, the selected checkpoint evaluated
 macro recall, 94.88% macro F1, and 0.04855 validation loss. These are
 single-model validation results; they do not measure an ensemble. Runtime OOD
 rejection is fixed at 70%.
-The best checkpoint was produced at
-`backend/model_daun_plantvillage_full_train.pth`; checkpoint and generated
-`outputsApp/` evaluation reports are intentionally excluded from Git. Preserve
-the checkpoint and evaluation report as separately managed project artifacts.
-The separate `outputsApp/pbl_baseline_metrics.json` is an earlier baseline
-report and is not the active model's performance report.
+The best checkpoint is tracked at
+`backend/model_daun_plantvillage_full_train.pth`, and its active evaluation
+report is tracked at `outputsApp/pbl_plantvillage_metrics.json`. Other generated
+`outputsApp/` runtime files are excluded from Git. Earlier baseline metrics, if
+used for comparison, are not the active model's performance report.
 
 An EfficientNet-B0 secondary model can be trained with the same trainer by
 passing `--architecture efficientnet_b0` and writing a separate checkpoint.

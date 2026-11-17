@@ -131,14 +131,14 @@ beserta `PLANT_API_URL` yang sesuai.
 
 ### Status model dan batasan
 
-Checkpoint model `*.pth` dan dataset `PlantVillage/` sengaja tidak disertakan
-dalam Git. Untuk memakai inferensi, tempatkan checkpoint MobileNetV2 yang
-kompatibel di `backend/model_daun_plantvillage_full_train.pth` atau set
-`PLANT_MODEL_PATH` ke lokasi checkpoint. Checkpoint harus memuat state dict dan
-metadata `classes` berurutan yang cocok dengan model. Tanpa checkpoint, API
-tetap dapat dimulai tetapi analisis gambar mengembalikan status layanan model
-tidak tersedia. Training/evaluasi juga memerlukan dataset terpisah di
-`PlantVillage/train/` dan `PlantVillage/val/`.
+Dataset `PlantVillage/` dan checkpoint tambahan `*.pth` tidak disertakan dalam
+Git. Checkpoint MobileNetV2 aktif di
+`backend/model_daun_plantvillage_full_train.pth` dilacak; checkpoint tersebut
+memuat state dict dan metadata `classes` terurut untuk 19 kelas. Untuk memakai
+checkpoint lain, set `PLANT_MODEL_PATH` ke lokasinya. Tanpa checkpoint yang
+valid, API tetap dapat dimulai tetapi analisis gambar mengembalikan status
+layanan model tidak tersedia. Training/evaluasi juga memerlukan dataset
+terpisah di `PlantVillage/train/` dan `PlantVillage/val/`.
 
 Checkpoint OOD-aware MobileNetV2 yang dipakai dalam evaluasi sebelumnya
 dilatih selama tiga epoch. Evaluasi validation terakhir memakai 7.014 gambar

@@ -3,8 +3,10 @@
 Dokumen ini merangkum struktur source code FastAPI dan Flutter Web yang
 dilacak, alur data, algoritma, parameter training, cara memperoleh dataset,
 hasil evaluasi, serta keterbatasan yang perlu dijelaskan saat presentasi.
-Dataset, checkpoint model, output runtime, aplikasi mobile terpisah, dan skrip
-eksperimen tidak disertakan dalam snapshot Git yang dibersihkan.
+Dataset, output runtime, aplikasi mobile terpisah, skrip eksperimen, dan
+checkpoint tambahan tidak disertakan dalam snapshot Git yang dibersihkan.
+Checkpoint MobileNetV2 aktif `backend/model_daun_plantvillage_full_train.pth`
+merupakan pengecualian dan dilacak di Git.
 
 ## 1. Ringkasan proyek
 
@@ -98,7 +100,10 @@ kebutuhan proyek, bukan tanggal kronologis yang dibuktikan oleh Git.
 
 Skrip eksperimen lama (`train.py`, `detect_webcam*.py`, dan
 `app_praktikum_streamlit.py`), aplikasi mobile terpisah, dataset PlantVillage,
-checkpoint `.pth`/`.h5`, dan `outputsApp/` runtime sengaja dikeluarkan dari Git.
+checkpoint tambahan `.pth`/`.h5`, dan file runtime `outputsApp/` sengaja
+dikeluarkan dari Git. Checkpoint MobileNetV2 aktif
+`backend/model_daun_plantvillage_full_train.pth` serta laporan metriknya
+`outputsApp/pbl_plantvillage_metrics.json` dilacak sebagai pengecualian.
 `backend/train_plant_model.py` tetap menjadi trainer utama. Untuk menggunakan
 inference tanpa dataset, backend mengambil urutan label dari metadata `classes`
 pada checkpoint; dataset tetap diperlukan jika model hendak dilatih ulang.
