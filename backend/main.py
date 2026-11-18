@@ -47,6 +47,7 @@ MODEL_PATH = Path(
 FALLBACK_MODEL_PATHS = (
     PROJECT_ROOT / "model_daun_plantvillage_full_train.pth",
     PROJECT_ROOT / "model_daun.pth",
+    Path(__file__).resolve().parent / "model_daun_plantvillage_full_train.pth",
 )
 DEFAULT_SECONDARY_MODEL_PATH = (
     PROJECT_ROOT / "backend" / "model_efficientnet_b0_plantvillage.pth"
@@ -470,8 +471,16 @@ _segment = segment_leaf
 def _numeric_ann_model() -> tuple[NumericFeatureANN | None, str | None]:
     global _numeric_ann
     checkpoint = os.getenv("PLANT_NUMERIC_ANN_WEIGHTS", "").strip()
-    checkpoint = checkpoint or str(NUMERIC_ANN_PATH)
-    if not Path(checkpoint).is_file():
+    if checkpoint:
+        checkpoint_path = Path(checkpoint)
+    else:
+        checkpoint_path = NUMERIC_ANN_PATH
+        if not checkpoint_path.is_file():
+            checkpoint_path = (
+                Path(__file__).resolve().parent / "numeric_ann_weights.json"
+            )
+    checkpoint = str(checkpoint_path)
+    if not checkpoint_path.is_file():
         return None, "Analisis kesehatan lanjutan belum tersedia."
     with _numeric_ann_lock:
         if _numeric_ann is not None and _numeric_ann[0] == checkpoint:
